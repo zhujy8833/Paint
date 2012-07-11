@@ -7,8 +7,12 @@
 	height : 375px;
 	/*cursor: url('../image/pen_write_edit.png'),auto;*/
 }
-
+#main canvas#canvas{
+    position : relative;
+    z-index:1;
+}
 #main canvas#canvas_back{
     position : absolute;
     top : 0px;
+    
 }
