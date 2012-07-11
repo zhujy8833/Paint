@@ -3,9 +3,13 @@
 	var Draw = function(canvas){
 		var that = this;
 		this.canvas = canvas;
+		if(canvas.nextElementSibling){
+			this.canvas_copy = canvas.nextElementSibling;
+		}
 		this.width = canvas.width;
 		this.height = canvas.height;
 		this.context = canvas.getContext('2d');
+		this.context_copy = this.canvas_copy.getContext('2d');
 		this.hasStarted = false;
 		this.shapeCollection = ["sketch","rect"];
 		//set defaults
@@ -50,6 +54,7 @@
 		var _this = context,
 		    context = this.context;
 		_this.hasStarted = true;
+		console.log("ss")
         context.beginPath();
         _this.startX = event._x;
         _this.startY = event._y;
@@ -96,6 +101,8 @@
 		var _this = context,
 		    context = this.context;
 		_this.hasStarted = false;
+		_this.context_copy.drawImage(_this.canvas,0,0);
+		_this.context.clearRect(0,0,_this.width,_this.height);
 	};
 
 	var canvas = document.getElementById('canvas'),
