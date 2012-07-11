@@ -63,7 +63,6 @@
         		context.moveTo(event._x,event._y);
         		break;
             case "rect" : 
-                console.log("rect")
             	//if rectagular
             	//we need to find the origin
             	break;
