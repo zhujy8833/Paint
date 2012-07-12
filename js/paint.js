@@ -113,14 +113,13 @@
 		 	        _x = Math.abs(x - _this.startX),
 		 	        _y = Math.abs(y - _this.startY),
 		 	        radius = Math.sqrt(_x*_x + _y*_y);
-		 	    context.arc(Math.floor(x),Math.floor(y) , Math.floor(radius), 0 , 2*Math.PI , false);
+		 	    context.arc(Math.floor(x),Math.floor(y) , Math.floor(radius), 0 , 2*Math.PI , true);
 		 	    context.clearRect(0 , 0 , _this.width , _this.height );
 		 	    context.stroke();
 		 	    break;
 		 	    
 		 }	//end of switch
-		}
-		
+		}		
 	};
 	Draw.prototype.mouseUp = function(event,context){
 		var _this = context,
@@ -133,16 +132,19 @@
     	var context= this.context;
     	context.clearRect(0,0,this.width,this.height);
     }
-    
+    Draw.prototype.clear = function(){
+    	var bg_context = this.context_copy;
+    	bg_context.clearRect(0,0,this.width,this.height);
+    }    
     /*******************************************************/
 	var canvas = document.getElementById('canvas'),
 	    colorpicker = document.getElementById('picker'),
-	    shapepicker = document.getElementById('shape');
+	    shapepicker = document.getElementById('shape'),
+	    clear = document.getElementById('clear');
 	canvas.draw = new Draw(canvas);
 	//setting default canvas shape
 	shapepicker.addEventListener('change',function(e){
 		canvas.draw.setShape(this.value);
-		console.log(canvas.draw.shape)
 	});
 	
 	shapepicker.options[0].selected = true;
@@ -150,6 +152,9 @@
 	colorpicker.addEventListener('change',function(e){
 		canvas.draw.setColor(this.value);
 	});
+	clear.addEventListener('click',function(e){
+		canvas.draw.clear();
+	})
 	
 
 }());
