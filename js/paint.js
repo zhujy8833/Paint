@@ -51,24 +51,37 @@
 		}
 	};
     Draw.prototype.mouseDown = function(event,context){
+    	//Here, if users use left mouse button, then draw
+    	//if users use right mouse button, then clear what he is drawing 
 		var _this = context,
-		    context = this.context;
-		_this.hasStarted = true;
-		console.log("ss")
-        context.beginPath();
-        _this.startX = event._x;
-        _this.startY = event._y;
-        switch(_this.shape){
-        	case "sketch" : 
-        		context.moveTo(event._x,event._y);
-        		break;
-            case "rect" : 
-                console.log("rect")
-            	//if rectagular
-            	//we need to find the origin
-            	break;
-        }
-        
+		    context = this.context,right_click;
+	    if(event.which){
+	    	right_click = (event.which===3);
+	    }
+	    else if(event.button){
+	        right_click = (event.button===2);
+	    }
+	    
+        if(!right_click){
+			_this.hasStarted = true;
+	        context.beginPath();
+	        _this.startX = event._x;
+	        _this.startY = event._y;
+	        switch(_this.shape){
+	        	case "sketch" : 
+	        		context.moveTo(event._x,event._y);
+	        		break;
+	            case "rect" : 
+	
+	            	//if rectagular
+	            	//we need to find the origin
+	            	break;
+	        }
+       }
+       else{
+       	  _this.cancel();
+       	  event.preventDefault();
+       }
         
 	};
 	Draw.prototype.mouseMove = function(event,context){
@@ -104,7 +117,12 @@
 		_this.context_copy.drawImage(_this.canvas,0,0);
 		_this.context.clearRect(0,0,_this.width,_this.height);
 	};
-
+    Draw.prototype.cancel = function(){
+    	var context= this.context;
+    	context.clearRect(0,0,this.width,this.height);
+    }
+    
+    /*******************************************************/
 	var canvas = document.getElementById('canvas'),
 	    colorpicker = document.getElementById('picker'),
 	    shapepicker = document.getElementById('shape');
