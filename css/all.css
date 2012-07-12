@@ -5,3 +5,5 @@
 	margin : 0 auto;
 	/*cursor: url('../image/pen_write_edit.png'),auto;*/
 }
+canvas {cursor: url('../image/pen_write_edit.png'),auto;}
+canvas.dragging {cursor: url('../image/pen_write_edit.png'),auto;}
