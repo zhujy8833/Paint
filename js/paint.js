@@ -12,10 +12,10 @@
 		/*this.context.strokeStyle = 'red';
 		this.context.lineWidth = 10;*/
 		function canvasCoord(event){
-			 if (event.layerX || event.layerX == 0) { // Firefox
-			    event._x = event.layerX;
-			    event._y = event.layerY;
-			  } else if (event.offsetX || event.offsetX == 0) { // Opera
+			 if (event.clientX || event.clientX == 0) { 
+			    event._x = event.clientX;
+			    event._y = event.clientY;
+			  } else if (event.offsetX || event.offsetX == 0) { 
 			    event._x = event.offsetX;
 			    event._y = event.offsetY;
 			  }
@@ -23,6 +23,7 @@
 	    this.canvas.addEventListener("mousedown",
 	        function(e){
 	            canvasCoord(e);
+	            console.log(this.style)
 	            that.mouseDown(e,that)
          });
 	    this.canvas.addEventListener("mousemove",
