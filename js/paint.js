@@ -3,12 +3,18 @@
 	var Draw = function(canvas){
 		var that = this;
 		this.canvas = canvas;
+		if(canvas.nextElementSibling){
+			this.canvas_copy = canvas.nextElementSibling;
+		}
+		this.width = canvas.width;
+		this.height = canvas.height;
 		this.context = canvas.getContext('2d');
+		this.context_copy = this.canvas_copy.getContext('2d');
 		this.hasStarted = false;
 		this.shapeCollection = ["sketch","rect"];
 		//set defaults
 		this.strokeStyle = "000000";
-		this.shape = "random";
+		this.shape = "sketch";
 		/*this.context.strokeStyle = 'red';
 		this.context.lineWidth = 10;*/
 		function canvasCoord(event){
@@ -23,12 +29,12 @@
 	    this.canvas.addEventListener("mousedown",
 	        function(e){
 	            canvasCoord(e);
-	            console.log(this.style)
 	            that.mouseDown(e,that)
          });
 	    this.canvas.addEventListener("mousemove",
 	        function(e){
 				canvasCoord(e);
+				
 	            that.mouseMove(e,that)
            });
 	    this.canvas.addEventListener("mouseup",
@@ -49,18 +55,46 @@
 		var _this = context,
 		    context = this.context;
 		_this.hasStarted = true;
+		console.log("ss")
         context.beginPath();
-        context.moveTo(event._x,event._y);
+        _this.startX = event._x;
+        _this.startY = event._y;
+        switch(_this.shape){
+        	case "sketch" : 
+        		context.moveTo(event._x,event._y);
+        		break;
+            case "rect" : 
+            	//if rectagular
+            	//we need to find the origin
+            	break;
+        }
+        
         
 	};
 	Draw.prototype.mouseMove = function(event,context){
 		var _this = context,
 		    context = this.context;
+	//	_this.canvas.classList.add("dragging")
 		if(_this.hasStarted){
 		    //if drawing gets started
-		    context.lineTo(event._x,event._y);
-		    context.strokeStyle = "#"+_this.strokeStyle
-		    context.stroke();	
+		context.strokeStyle = "#"+_this.strokeStyle
+		 switch(_this.shape){
+		 	case "sketch":
+		 		context.lineTo(event._x,event._y);
+		 		context.stroke();	
+		 		break;
+		 	case "rect":
+		 	    /*calculation of x,y,w,h*/
+		 	    var x = Math.min(_this.startX,event._x),
+		 	        y = Math.min(_this.startY,event._y),
+		 	        w = Math.abs(_this.startX - event._x),
+		 	        h = Math.abs(_this.startY - event._y);
+		 	        
+		 	    context.clearRect(0,0,_this.width,_this.height);
+		 	    context.strokeRect(x,y,w,h);
+		 	   // context.clearRect(0,0,_this.width,_this.height);
+		 	    break;
+		 }	
 		}
 		
 	};
@@ -68,6 +102,8 @@
 		var _this = context,
 		    context = this.context;
 		_this.hasStarted = false;
+		_this.context_copy.drawImage(_this.canvas,0,0);
+		_this.context.clearRect(0,0,_this.width,_this.height);
 	};
 
 	var canvas = document.getElementById('canvas'),

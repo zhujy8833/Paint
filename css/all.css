@@ -3,7 +3,25 @@
 	border: 1px solid grey;
 	display: inline-block;
 	margin : 0 auto;
+	position: relative;
+	height : 375px;
 	/*cursor: url('../image/pen_write_edit.png'),auto;*/
 }
-canvas {cursor: url('../image/pen_write_edit.png'),auto;}
-canvas.dragging {cursor: url('../image/pen_write_edit.png'),auto;}
+
+#main canvas {
+    cursor: url('../image/pen_write_edit.png'),auto;
+    }
+#main canvas.dragging {
+    cursor: url('../image/pen_write_edit.png'),auto;
+    }
+
+#main canvas#canvas{
+    position : relative;
+    z-index:1;
+}
+#main canvas#canvas_back{
+    position : absolute;
+    top : 0px;
+    
+}
+>>>>>>> master
