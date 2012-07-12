@@ -11,7 +11,7 @@
 		this.context = canvas.getContext('2d');
 		this.context_copy = this.canvas_copy.getContext('2d');
 		this.hasStarted = false;
-		this.shapeCollection = ["sketch","rect"];
+		this.shapeCollection = ["sketch","rect","circle"];
 		//set defaults
 		this.strokeStyle = "000000";
 		this.shape = "sketch";
@@ -49,6 +49,9 @@
 		if(shapeList.indexOf(shape)!=-1){
 			this.shape = shape;
 		}
+		else{
+			throw("The shape is not presented in the list");
+		}
 	};
     Draw.prototype.mouseDown = function(event,context){
     	//Here, if users use left mouse button, then draw
@@ -72,15 +75,13 @@
 	        		context.moveTo(event._x,event._y);
 	        		break;
 	            case "rect" : 
-	
-	            	//if rectagular
-	            	//we need to find the origin
 	            	break;
+	            case "circle": 
+	                break;
 	        }
        }
        else{
        	  _this.cancel();
-       	  event.preventDefault();
        }
         
 	};
@@ -89,7 +90,7 @@
 		    context = this.context;
 		if(_this.hasStarted){
 		    //if drawing gets started
-		context.strokeStyle = "#"+_this.strokeStyle
+		 context.strokeStyle = "#"+_this.strokeStyle;
 		 switch(_this.shape){
 		 	case "sketch":
 		 		context.lineTo(event._x,event._y);
@@ -106,7 +107,18 @@
 		 	    context.strokeRect(x,y,w,h);
 		 	   // context.clearRect(0,0,_this.width,_this.height);
 		 	    break;
-		 }	
+		 	case "circle" :
+		 	    var x = Math.abs(event._x + _this.startX)/2,
+		 	        y = Math.abs(event._y + _this.startY)/2,
+		 	        _x = Math.abs(x - _this.startX),
+		 	        _y = Math.abs(y - _this.startY),
+		 	        radius = Math.sqrt(_x*_x + _y*_y);
+		 	    context.arc(Math.floor(x),Math.floor(y) , Math.floor(radius), 0 , 2*Math.PI , false);
+		 	    context.clearRect(0 , 0 , _this.width , _this.height );
+		 	    context.stroke();
+		 	    break;
+		 	    
+		 }	//end of switch
 		}
 		
 	};
@@ -130,6 +142,7 @@
 	//setting default canvas shape
 	shapepicker.addEventListener('change',function(e){
 		canvas.draw.setShape(this.value);
+		console.log(canvas.draw.shape)
 	});
 	
 	shapepicker.options[0].selected = true;
