@@ -1,7 +1,6 @@
 (function(){
 
 	var Draw = function(canvas){
-		var that = this;
 		this.canvas = canvas;
 		if(canvas.nextElementSibling){
 			this.canvas_copy = canvas.nextElementSibling;
@@ -17,29 +16,7 @@
 		this.shape = "sketch";
 		/*this.context.strokeStyle = 'red';
 		this.context.lineWidth = 10;*/
-		function canvasCoord(event){
-			 if (event.layerX || event.layerX == 0) { // Firefox
-			    event._x = event.layerX;
-			    event._y = event.layerY;
-			  } else if (event.offsetX || event.offsetX == 0) { // Opera
-			    event._x = event.offsetX;
-			    event._y = event.offsetY;
-			  }
-		}
-	    this.canvas.addEventListener("mousedown",
-	        function(e){
-	            canvasCoord(e);
-	            that.mouseDown(e,that)
-         });
-	    this.canvas.addEventListener("mousemove",
-	        function(e){
-				canvasCoord(e);
-	            that.mouseMove(e,that)
-           });
-	    this.canvas.addEventListener("mouseup",
-	        function(e){
-            	that.mouseUp(e,that)
-           });
+		this.event_binding();
 	}
 	Draw.prototype.setColor = function(color){
 		this.strokeStyle = color;
@@ -53,6 +30,39 @@
 			throw("The shape is not presented in the list");
 		}
 	};
+	Draw.prototype.event_binding = function(){
+		var that = this, canvas = this.canvas;
+		function canvasCoord(event){
+			 if (event.layerX || event.layerX == 0) { // Firefox
+			    event._x = event.layerX;
+			    event._y = event.layerY;
+			  } else if (event.offsetX || event.offsetX == 0) { // Opera
+			    event._x = event.offsetX;
+			    event._y = event.offsetY;
+			  }
+		}
+	    canvas.addEventListener("mousedown",
+	        function(e){
+	            canvasCoord(e);
+	            that.mouseDown(e,that)
+         		});
+	    canvas.addEventListener("mousemove",
+	        function(e){
+				canvasCoord(e);
+	            that.mouseMove(e,that)
+          });
+	    canvas.addEventListener("mouseup",
+	        function(e){
+            	that.mouseUp(e,that)
+          });
+        canvas.addEventListener("mousewheel",
+            function(e){
+            	//Here I consider implementing the zoomin/zoomout functionalty through mousewheel scrolling
+            	//console.log(e)
+            });
+        
+        
+	}
     Draw.prototype.mouseDown = function(event,context){
     	//Here, if users use left mouse button, then draw
     	//if users use right mouse button, then clear what he is drawing 
@@ -113,7 +123,8 @@
 		 	        _x = Math.abs(x - _this.startX),
 		 	        _y = Math.abs(y - _this.startY),
 		 	        radius = Math.sqrt(_x*_x + _y*_y);
-		 	    context.arc(Math.floor(x),Math.floor(y) , Math.floor(radius), 0 , 2*Math.PI , true);
+		 	    //x, y, radius, startAngle, endAngle, antiClockwise    
+		 	    context.arc(Math.floor(x),Math.floor(y) , Math.floor(radius), 0 , 2*Math.PI , false);
 		 	    context.clearRect(0 , 0 , _this.width , _this.height );
 		 	    context.stroke();
 		 	    break;
