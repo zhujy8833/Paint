@@ -10,7 +10,7 @@
 		this.context = canvas.getContext('2d');
 		this.context_copy = this.canvas_copy.getContext('2d');
 		this.hasStarted = false;
-		this.shapeCollection = ["sketch","rect","circle"];
+		this.shapeCollection = ["sketch","rect","circle","line"];
 		//set defaults
 		this.strokeStyle = "000000";
 		this.shape = "sketch";
@@ -112,7 +112,6 @@
 		 	        y = Math.min(_this.startY,event._y),
 		 	        w = Math.abs(_this.startX - event._x),
 		 	        h = Math.abs(_this.startY - event._y);
-		 	        
 		 	    context.clearRect(0,0,_this.width,_this.height);
 		 	    context.strokeRect(x,y,w,h);
 		 	   // context.clearRect(0,0,_this.width,_this.height);
@@ -123,19 +122,29 @@
 		 	        _x = Math.abs(x - _this.startX),
 		 	        _y = Math.abs(y - _this.startY),
 		 	        radius = Math.sqrt(_x*_x + _y*_y);
+		 	    
+		 	    context.clearRect(0,0,_this.width,_this.height );
 		 	    //x, y, radius, startAngle, endAngle, antiClockwise    
-		 	    context.arc(Math.floor(x),Math.floor(y) , Math.floor(radius), 0 , 2*Math.PI , false);
-		 	    context.clearRect(0 , 0 , _this.width , _this.height );
+		 	    //context.arc(Math.floor(x),Math.floor(y) , Math.floor(radius), 0 , 2*Math.PI , false);
+		 	    context.beginPath();
+		 	    context.arc(x,y ,radius, 0 , 2*Math.PI , true);		 	    
 		 	    context.stroke();
 		 	    break;
+		 	case "line" : 
+		 	    context.beginPath();
+		 	    context.moveTo(_this.startX,_this.startY);
+		 	    context.lineTo(event._x,event._y);
+		 	    context.clearRect(0,0,_this.width,_this.height);
+		 	    context.stroke();
+		 		break;
 		 	    
 		 }	//end of switch
 		}		
 	};
 	Draw.prototype.mouseUp = function(event,context){
-		var _this = context,
-		    context = this.context;
+		var _this = context;
 		_this.hasStarted = false;
+	    _this.context.closePath();
 		_this.context_copy.drawImage(_this.canvas,0,0);
 		_this.context.clearRect(0,0,_this.width,_this.height);
 	};
