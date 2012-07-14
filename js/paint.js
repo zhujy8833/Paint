@@ -11,6 +11,7 @@
 		this.context_copy = this.canvas_copy.getContext('2d');
 		this.hasStarted = false;
 		this.shapeCollection = ["sketch","rect","circle","line"];
+		this.eraseMode = false;
 		//set defaults
 		this.strokeStyle = "000000";
 		this.shape = "sketch";
@@ -18,9 +19,12 @@
 		this.context.lineWidth = 10;*/
 		this.event_binding();
 	}
-	Draw.prototype.setColor = function(color){
+	Draw.prototype.setColor = function(color/*string*/){
 		this.strokeStyle = color;
 	};
+	Draw.prototype.setLinewidth = function(linewidth/*int*/){
+		this.lineWidth = linewidth
+	}
 	Draw.prototype.setShape = function(shape){
 		var shapeList = this.shapeCollection;
 		if(shapeList.indexOf(shape)!=-1){
@@ -30,6 +34,20 @@
 			throw("The shape is not presented in the list");
 		}
 	};
+	Draw.prototype.setEraser = function(settings/*obj*/){
+		//default width and height is 10
+		this.erase_setting = {};
+		this.erase_setting['width'] = settings.width || 10;
+		this.erase_setting['height'] = settings.height || 10;
+	}
+	Draw.prototype.toEraseMode = function(){
+		this.eraseMode =  true;
+	}
+	Draw.prototype.toDrawMode = function(){
+		if(this.eraseMode){
+			this.eraseMode = false;
+		}
+	}
 	Draw.prototype.event_binding = function(){
 		var that = this, canvas = this.canvas;
 		function canvasCoord(event){
@@ -49,7 +67,18 @@
 	    canvas.addEventListener("mousemove",
 	        function(e){
 				canvasCoord(e);
-	            that.mouseMove(e,that)
+				if(!that.eraseMode){      //In drawing mode
+					that.mouseMove(e,that)
+				}
+				else{                     //in erase mode
+					if(that.erase_setting.width && that.erase_setting.height){
+						that.erase(e._x, e._y, that.erase_setting.width, that.erase_setting.height);						
+					}
+					else{
+					    throw 'erase setting is missing';	
+					}
+				}
+	            
           });
 	    canvas.addEventListener("mouseup",
 	        function(e){
@@ -95,9 +124,14 @@
        }
         
 	};
+	Draw.prototype.erase = function(x,y,w,h){
+		var _this = this, context = this.context_copy;
+	    context.clearRect(x,y,w,h); 
+		
+	}
 	Draw.prototype.mouseMove = function(event,context){
 		var _this = context,
-		    context = this.context;
+		    context = _this.context;
 		if(_this.hasStarted){
 		    //if drawing gets started
 		 context.strokeStyle = "#"+_this.strokeStyle;
@@ -160,13 +194,23 @@
 	var canvas = document.getElementById('canvas'),
 	    colorpicker = document.getElementById('picker'),
 	    shapepicker = document.getElementById('shape'),
-	    clear = document.getElementById('clear');
+	    clear = document.getElementById('clear'),
+	    eraser = document.getElementById('eraser');
 	canvas.draw = new Draw(canvas);
 	//setting default canvas shape
 	shapepicker.addEventListener('change',function(e){
+		canvas.draw.toDrawMode();
 		canvas.draw.setShape(this.value);
 	});
-	
+	eraser.addEventListener('change',function(e){
+		var eraser = this,
+		    setting = {
+				width : eraser.value.split(",")[0],
+			    height: eraser.value.split(",")[1]
+			};
+		canvas.draw.toEraseMode();
+		canvas.draw.setEraser(setting);
+	});
 	shapepicker.options[0].selected = true;
 	//setting default canvas stroke 
 	colorpicker.addEventListener('change',function(e){
