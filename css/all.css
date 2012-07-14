@@ -1,18 +1,26 @@
 #main div#canvas_container{
     
 	border: 1px solid grey;
-	display: inline-block;
+	display: block;
 	margin : 0 auto;
 	position: relative;
+    width: 500px;
 	height : 375px;
 	/*cursor: url('../image/pen_write_edit.png'),auto;*/
 }
 #main canvas#canvas{
-    position : relative;
+    position : absolute;
     z-index:1;
 }
 #main canvas#canvas_back{
     position : absolute;
     top : 0px;
     
+}
+
+#main #panel{
+    display:block;
+    margin: 0 auto;
+    max-width: 600px;
+    margin-bottom: 10px;
 }

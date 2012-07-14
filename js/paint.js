@@ -22,6 +22,7 @@
 	Draw.prototype.setColor = function(color/*string*/){
 		this.strokeStyle = color;
 	};
+
 	Draw.prototype.setLinewidth = function(linewidth/*int*/){
 		this.lineWidth = linewidth
 	}
