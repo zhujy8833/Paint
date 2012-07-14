@@ -126,8 +126,9 @@
 	};
 	Draw.prototype.erase = function(x,y,w,h){
 		var _this = this, context = this.context_copy;
-	    context.clearRect(x,y,w,h); 
-		
+		if(_this.hasStarted){
+	    	context.clearRect(x,y,w,h); 
+		}
 	}
 	Draw.prototype.mouseMove = function(event,context){
 		var _this = context,
