@@ -1,4 +1,3 @@
-(function(){
 
 	var Draw = function(canvas){
 		this.canvas = canvas;
@@ -52,12 +51,13 @@
 	Draw.prototype.event_binding = function(){
 		var that = this, canvas = this.canvas;
 		function canvasCoord(event){
-			 if (event.layerX || event.layerX == 0) { // Firefox
-			    event._x = event.layerX;
-			    event._y = event.layerY;
-			  } else if (event.offsetX || event.offsetX == 0) { // Opera
+			 if (event.offsetX || event.offsetX == 0) { // Firefox
 			    event._x = event.offsetX;
 			    event._y = event.offsetY;
+			  }
+             else{
+                event._x = event.layerX;
+			    event._y = event.layerY;
 			  }
 		}
 	    canvas.addEventListener("mousedown",
@@ -192,35 +192,5 @@
     	bg_context.clearRect(0,0,this.width,this.height);
     }    
     /*******************************************************/
-	var canvas = document.getElementById('canvas'),
-	    colorpicker = document.getElementById('picker'),
-	    shapepicker = document.getElementById('shape'),
-	    clear = document.getElementById('clear'),
-	    eraser = document.getElementById('eraser');
-	canvas.draw = new Draw(canvas);
-	//setting default canvas shape
-	shapepicker.addEventListener('change',function(e){
-		canvas.draw.toDrawMode();
-		canvas.draw.setShape(this.value);
-	});
-	eraser.addEventListener('change',function(e){
-		var eraser = this,
-		    setting = {
-				width : eraser.value.split(",")[0],
-			    height: eraser.value.split(",")[1]
-			};
-		canvas.draw.toEraseMode();
-		canvas.draw.setEraser(setting);
-	});
-	shapepicker.options[0].selected = true;
-	//setting default canvas stroke 
-	colorpicker.addEventListener('change',function(e){
-		canvas.draw.setColor(this.value);
-	});
-	clear.addEventListener('click',function(e){
-		canvas.draw.clear();
-	})
-	
 
-}());
 
