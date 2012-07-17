@@ -11,7 +11,12 @@
 #main canvas#canvas{
     position : absolute;
     z-index:1;
+    cursor: url('../image/pen_write_edit.png'), pointer;
 }
+#main canvas#canvas.eraser{
+    cursor: url('../image/eraser.png'),hand;
+}
+
 #main canvas#canvas_back{
     position : absolute;
     top : 0px;
