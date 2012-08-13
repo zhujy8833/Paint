@@ -11,6 +11,9 @@
 #main canvas#canvas{
     position : absolute;
     z-index:1;
+}
+
+#main canvas#canvas.draw{
     cursor: url('../image/pen_write_edit.png'), pointer;
 }
 #main canvas#canvas.eraser{
@@ -24,8 +27,47 @@
 }
 
 #main #panel{
-    display:block;
-    margin: 0 auto;
+   /* display:block;*/
+   /* margin: 0 auto;*/
     max-width: 600px;
     margin-bottom: 10px;
+    margin-left: 17px;
+}
+
+#main #panel > span{
+    float:left;
+    clear:both;
+    margin-top:12px;
+}
+
+#main #bottom{
+    margin: 8px auto;
+    width: 500px;
+}
+
+/*button style*/
+button{
+   /* border: 1px solid red;*/
+    border-radius: 3px;
+    padding: 4px 10px;
+    background: #ffffff; /* Old browsers */
+    background: -moz-linear-gradient(top, #ffffff 0%, #e1e1e1 24%, #f1f1f1 50%, #f6f6f6 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(24%,#e1e1e1), color-stop(50%,#f1f1f1), color-stop(100%,#f6f6f6)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #ffffff 0%,#e1e1e1 24%,#f1f1f1 50%,#f6f6f6 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #ffffff 0%,#e1e1e1 24%,#f1f1f1 50%,#f6f6f6 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #ffffff 0%,#e1e1e1 24%,#f1f1f1 50%,#f6f6f6 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #ffffff 0%,#e1e1e1 24%,#f1f1f1 50%,#f6f6f6 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 ); /* IE6-9 */
+    cursor : pointer;
+    color : gray;
+    font-weight: 800;
+    font-family: Tahoma, Arial;
+    letter-spacing: 1px;
+
+}
+button.clear{
+
+}
+button.save{
+    float : right;
 }

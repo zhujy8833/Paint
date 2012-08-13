@@ -13,7 +13,8 @@
 		this.eraseMode = false;
 		//set defaults
 		this.strokeStyle = "000000";
-		this.shape = "sketch";
+		//this.shape = "sketch";
+        this.shape = null;
 		/*this.context.strokeStyle = 'red';
 		this.context.lineWidth = 10;*/
 		this.event_binding();
@@ -27,9 +28,12 @@
 	}
 	Draw.prototype.setShape = function(shape){
 		var shapeList = this.shapeCollection;
-		if(shapeList.indexOf(shape)!=-1){
+		if(!!shape && shapeList.indexOf(shape) !== -1){
 			this.shape = shape;
 		}
+        else if(!shape){
+            this.shape = null;
+        }
 		else{
 			throw("The shape is not presented in the list");
 		}
@@ -50,6 +54,7 @@
 	}
 	Draw.prototype.event_binding = function(){
 		var that = this, canvas = this.canvas;
+
 		function canvasCoord(event){
 			 if (event.offsetX || event.offsetX == 0) { // Firefox
 			    event._x = event.offsetX;
@@ -60,37 +65,49 @@
 			    event._y = event.layerY;
 			  }
 		}
-	    canvas.addEventListener("mousedown",
-	        function(e){
-	            canvasCoord(e);
-	            that.mouseDown(e,that)
-         		});
-	    canvas.addEventListener("mousemove",
-	        function(e){
-				canvasCoord(e);
-				if(!that.eraseMode){      //In drawing mode
-					that.mouseMove(e,that)
-				}
-				else{                     //in erase mode
-					if(that.erase_setting.width && that.erase_setting.height){
-						that.erase(e._x, e._y, that.erase_setting.width, that.erase_setting.height);						
-					}
-					else{
-					    throw 'erase setting is missing';	
-					}
-				}
-	            
-          });
-	    canvas.addEventListener("mouseup",
-	        function(e){
-            	that.mouseUp(e,that)
-          });
-        canvas.addEventListener("mousewheel",
-            function(e){
-            	//Here I consider implementing the zoomin/zoomout functionalty through mousewheel scrolling
-            	//console.log(e)
+            canvas.addEventListener("mousedown",
+                function(e){
+                    if(!that.shape){
+                        return false;
+                    }
+                    canvasCoord(e);
+                    that.mouseDown(e,that)
+                    });
+            canvas.addEventListener("mousemove",
+                function(e){
+                    if(!that.shape){
+                        return false;
+                    }
+                    canvasCoord(e);
+                    if(!that.eraseMode){      //In drawing mode
+                        that.mouseMove(e,that)
+                    }
+                    else{                     //in erase mode
+                        if(that.erase_setting.width && that.erase_setting.height){
+                            that.erase(e._x, e._y, that.erase_setting.width, that.erase_setting.height);
+                        }
+                        else{
+                            throw 'erase setting is missing';
+                        }
+                    }
+
+              });
+            canvas.addEventListener("mouseup",
+                function(e){
+                    if(!that.shape){
+                        return false;
+                    }
+                    that.mouseUp(e,that)
             });
-        
+            canvas.addEventListener("mousewheel",
+                function(e){
+                    if(!that.shape){
+                        return false;
+                    }
+                    //Here I consider implementing the zoomin/zoomout functionalty through mousewheel scrolling
+                    //console.log(e)
+            });
+
         
 	}
     Draw.prototype.mouseDown = function(event,context){

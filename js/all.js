@@ -4,7 +4,7 @@
         var canvas = document.getElementById('canvas'),
             colorpicker = document.getElementById('picker'),
             shapepicker = document.getElementById('shape'),
-            clear = document.getElementById('clear'),
+            clear = document.getElementById('clear_btn'),
             eraser = document.getElementById('eraser');
         /*var eraser_image = {
             	eraser : "image/eraser.png",
@@ -23,9 +23,15 @@
                 shapepicker.addEventListener('change',function(e){
                     canvas.draw.toDrawMode();
                     canvas.draw.setShape(this.value);
-                    if($(canvas).hasClass('eraser')){
-                     	$(canvas).removeClass('eraser');
+                    $(canvas).removeClass('eraser');
+                    if(this.selectedIndex === 0){
+                        //$(canvas).removeClass('eraser');
+                        $(canvas).removeClass('draw');
                     }
+                    else{
+                        $(canvas).addClass('draw');
+                    }
+
                     //change cursor image to pencil
                     //canvas.style.cursor = eraser_image.pencil;
                 });

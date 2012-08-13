@@ -12,17 +12,17 @@
 				</span>
 				<span id="shape_picker">
 					<select id="shape">
+                        <option value="">Select Shape</option>
 						<option value="sketch">Sketch</opiton>
 						<option value="rect">Rectangular</option>
 						<option value="circle">Circle</option>
 						<option value="line">Line</option>
 					</select>
 				</span>
-				<span>
-					<button id="clear">Clear</button>
-				</span>
+
 				<span>
 					<select id="eraser">
+                        <option value="">Select Eraser Size</option>
 						<option value="10,10">10*10</option>
 						<option value="20,20">20*20</option>
 						<option value="30,30">30*30</option>
@@ -37,6 +37,14 @@
 				</canvas>
 
 			</div>
+            <div id="bottom">
+                <span>
+					<button id="clear_btn" class="clear">Clear Canvas</button>
+				</span>
+                <span>
+					<button id="save_btn" class="save">Save Canvas</button>
+				</span>
+            </div>
 		</div>
         <script src="js/jquery-1.6.1.min.js" type="text/javascript"></script>
 		<script src="js/jscolor/jscolor.js" type="text/javascript"></script>
